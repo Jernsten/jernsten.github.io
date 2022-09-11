@@ -1,16 +1,17 @@
 import { HeadLine, NavButton, Text } from "../Component";
 
-export function Start() {
+export default function Start() {
   return (
     <>
-      <HeadLine>Ibland är det svårt att gå vidare från något som hänt</HeadLine>
+      <HeadLine>The Work is a Practice</HeadLine>
 
       <Text>
-        The work är en form av meditation där man analyserar tankar och övertygelser. Metoden är enkel, den går ut på
-        sätta sig i en specifik händelse och att svara på ett par frågor.
+        Every time you do The Work you are becoming enlightened to who and what you are, the true nature of being. To
+        question what you believe is an amazing gift to give yourself, and you can have it all the days of your life.
+        The answers are always inside you, just waiting to be heard.
       </Text>
 
-      <NavButton to="the-situation" txt="Sätt igång" />
+      <NavButton to="who-whew-where" txt="Sätt igång" />
     </>
   );
 }
