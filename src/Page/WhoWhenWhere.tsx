@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { Box, Button, Fade, Popper, TextField } from "@mui/material";
 
 import { HeadLine, PaddedBox, Text } from "../Component";
+import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "../Hooks/useLocalStorage";
 
 interface IValue {
   target: { value: string };
@@ -15,13 +17,13 @@ for years, and it hasn’t solved anything yet. Judging someone else, questionin
 turning them around is the fast path to understanding and self-realization.`;
 
 export default function WhoWhenWhere() {
-  const [when, setWhen] = useState("");
+  const [when, setWhen] = useLocalStorage("when");
   const [where, setWhere] = useState("");
   const [who, setWho] = useState("");
   const onWhenChange = ({ target: { value } }: IValue) => setWhen(value.toLowerCase());
   const onWhereChange = ({ target: { value } }: IValue) => setWhere(value.toLowerCase());
   const onWhoChange = ({ target: { value } }: IValue) => setWho(value.toLowerCase());
-  
+
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -31,9 +33,9 @@ export default function WhoWhenWhere() {
   const canBeOpen = open && Boolean(anchorEl);
   const id = canBeOpen ? "transition-popper" : undefined;
 
-  const previewText = `${when || "Då"} när jag var ${where || "någonstans"} med ${who || "någon."} ~`;
+  const previewText = `${when || "Då"} när jag var ${where || "någonstans"} med ${who || "någon."}`;
   const displayPreviwText = previewText[0].toUpperCase() + previewText.substring(1);
-  
+
   const tooltip = (
     <PaddedBox>
       <Button onClick={handleClick}>Kan jag välja mig själv?</Button>
@@ -50,10 +52,21 @@ export default function WhoWhenWhere() {
   );
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const complete = () => {
-    dispatch({ type: "", item: { who, when, where } });
+    if (readyToComplete) {
+      dispatch({ type: "", item: { who, when, where } });
+      navigate("/the-situation", { replace: true });
+    }
   };
+
+  const [readyToComplete, setReadyToComplete] = useState(false);
+  
+  useEffect(() => {
+    if (who && when && where) setReadyToComplete(true);
+    else setReadyToComplete(false);
+  }, [who, when, where]);
 
   return (
     <Box>
@@ -78,10 +91,11 @@ export default function WhoWhenWhere() {
         <Text>{displayPreviwText}</Text>
       </PaddedBox>
       <PaddedBox>
-        <Button onClick={complete} variant="contained">
-          Berätta vad som hände
-        </Button>
-        {/* <NavButton to="the-situation" txt="Berätta vad som hände" /> */}
+        {readyToComplete && (
+          <Button onClick={complete} variant="contained">
+            Berätta vad som hände
+          </Button>
+        )}
       </PaddedBox>
     </Box>
   );
