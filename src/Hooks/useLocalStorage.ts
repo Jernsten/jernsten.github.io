@@ -1,35 +1,32 @@
 import { useEffect, useState } from "react";
 
-function useLocalStorageKeyCount() {
-  let numberOfKeys = 0;
-  for (let i = 0; i < localStorage.length; i++) {
-    let aKey = localStorage.key(i);
-    if (aKey?.includes("the-work")) {
-      numberOfKeys++;
-    }
-  }
-  return [numberOfKeys, numberOfKeys === 0];
+function localStorageKeyCount() {
+  return Object.entries(localStorage).filter((key) => key.includes("the-work")).length;
 }
 
-export function useLocalStorage(
-  key: string,
-  defaultValue?: string
-): [value: string | undefined, setValue: (key: string) => void] {
-  const localStorageKey = `the-work.${key}`;
-  const valueString = localStorage.getItem(localStorageKey) ?? defaultValue ?? "";
+export function useLocalStorage(key: string): [value: string | undefined, setValue: (key: string) => void] {
+  const lsKeyName = `the-work.${key}`;
+  const valueString = localStorage.getItem(lsKeyName) ?? "";
   const valueObject = valueString ? JSON.parse(valueString) : "";
+
+  localStorageKeyCount();
 
   const [value, setValue] = useState(valueObject);
 
   useEffect(() => {
-    localStorage.setItem(localStorageKey, JSON.stringify(value));
-  }, [localStorageKey, value]);
-
-  let [, doesntHaveAnyKeys] = useLocalStorageKeyCount();
-
-  useEffect(() => {
-    doesntHaveAnyKeys && localStorage.removeItem(localStorageKey);
-  }, [doesntHaveAnyKeys, localStorageKey]);
+    value && localStorage.setItem(lsKeyName, JSON.stringify(value));
+  }, [lsKeyName, value]);
 
   return [value, setValue];
+}
+
+export function getLocalStorageKeys(...theArgs: string[]) {
+  const returnObject: { [key: string]: string } = {};
+
+  theArgs.forEach((key: string) => {
+    const [value] = useLocalStorage(key);
+    Object.assign(returnObject, { [key]: value });
+  });
+
+  return returnObject;
 }
