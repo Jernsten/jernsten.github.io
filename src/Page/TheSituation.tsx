@@ -1,5 +1,5 @@
-import { Box, Card, TextField } from "@mui/material";
-import { HeadLine, NavButton, PaddedBox, Text } from "../Component";
+import { Box, TextField } from "@mui/material";
+import { ExampleBox, HeadLine, NavButton, PaddedBox, Text } from "../Component";
 import { useLocalStorage } from "../Hooks/useLocalStorage";
 import { IValue } from "./WhoWhenWhere";
 
@@ -10,7 +10,7 @@ export default function TheSituation() {
 
   const [theSituation, setTheSituation] = useLocalStorage("theSituation");
 
-  const onTheSituationChange = ({ target: { value } }: IValue) => setTheSituation(value.toLowerCase());
+  const onTheSituationChange = ({ target: { value } }: IValue) => setTheSituation(value);
 
   const previewText = `${when} när jag var ${where} med ${who}...`;
   const displayPreviewText = previewText[0].toUpperCase() + previewText.substring(1);
@@ -23,13 +23,11 @@ export default function TheSituation() {
           Skriv kortfattat och förenklat. <br />
           Var extremt ärlig, skriv barnsligt, var småsint. Skriv helt utan filter!
         </Text>
-        <Card>
-          Exempel: Matilda ville inte höra när jag försökte berätta varför jag var sen. Hon är en lögnaktig skit som
-          utnuttjar Kristina. Hon försöker framställa mig som the bad guy.
-        </Card>
       </PaddedBox>
       <PaddedBox>
-        <Text>{displayPreviewText}</Text>
+        <Text italic>{displayPreviewText}</Text>
+      </PaddedBox>
+      <PaddedBox>
         <TextField
           multiline
           minRows={5}
@@ -39,6 +37,12 @@ export default function TheSituation() {
           autoComplete="off"
           sx={{ width: "350px" }}
         />
+      </PaddedBox>
+      <PaddedBox>
+        <ExampleBox>
+          Exempel: Matilda ville inte höra när jag försökte berätta varför jag var sen. Hon är en lögnaktig skit som
+          utnuttjar Kristina. Hon försöker framställa mig som the bad guy.
+        </ExampleBox>
       </PaddedBox>
       <PaddedBox>
         <NavButton to={"how-do-you-feel"} txt={"Gå vidare"} />
