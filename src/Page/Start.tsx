@@ -4,12 +4,20 @@ import { HeadLine, NavButton, Text } from "../Component";
 export default function Start() {
   return (
     <Box>
-      <HeadLine>The Work is a Practice</HeadLine>
+      <HeadLine>Du tänker för mycket</HeadLine>
       <Text>
-        Every time you do The Work you are becoming enlightened to who and what you are, the true nature of being. To
-        question what you believe is an amazing gift to give yourself, and you can have it all the days of your life.
-        The answers are always inside you, just waiting to be heard.
+        Den vänstra hjärnhalvans uppgift är att berätta vad som händer inom och utanför dig. Det är den rösten du hör
+        tänka, analysera, resonera, kritsera.
       </Text>
+      <Text>
+        Bakom jiddret finns det en tystnad som lyssnar och hör. Men tystnaden kan tala, dock måste du bli stilla en
+        stund för att höra sanningen.
+      </Text>
+      <Text>
+        Du kan använda detta verktyg för att bearbeta dina tankar och känslor. Se det som en förhöjd meditation, eller
+        självterapi.
+      </Text>
+
       <NavButton to="who-whew-where" txt="Sätt igång" />
     </Box>
   );

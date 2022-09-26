@@ -5,7 +5,7 @@ import { Box, Container, CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./Styles";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { HowDoYouFeel, Start, TheSituation, WhoWhenWhere } from "./Page";
+import { HowDoYouFeel, Start, TheSituation, WhoWhenWhere, WhatYouWant } from "./Page";
 
 function App() {
   return (
@@ -19,6 +19,7 @@ function App() {
               <Route path="/who-whew-where" element={<WhoWhenWhere />} />
               <Route path="/the-situation" element={<TheSituation />} />
               <Route path="/how-do-you-feel" element={<HowDoYouFeel />} />
+              <Route path="/what-you-want" element={<WhatYouWant />} />
             </Routes>
           </Box>
         </Container>

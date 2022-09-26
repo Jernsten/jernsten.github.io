@@ -1,11 +1,15 @@
 import { Box, Button, Card, TextField } from "@mui/material";
 
-import { HeadLine, NavButton, PaddedBox, Text } from "../Component";
+import { ExampleBox, HeadLine, NavButton, PaddedBox, Text } from "../Component";
 import { useLocalStorage } from "../Hooks/useLocalStorage";
 
 export interface IValue {
   target: { value: string };
 }
+
+export const change = (setter: (key: string) => void) => {
+  return ({ target: { value } }: IValue) => setter(value);
+};
 
 export default function WhoWhenWhere() {
   const [when, setWhen] = useLocalStorage("when");
@@ -14,23 +18,22 @@ export default function WhoWhenWhere() {
 
   const readyToComplete = who && where && when;
 
-  const onWhenChange = ({ target: { value } }: IValue) => setWhen(value.toLowerCase());
-  const onWhereChange = ({ target: { value } }: IValue) => setWhere(value.toLowerCase());
-  const onWhoChange = ({ target: { value } }: IValue) => setWho(value);
+  const onWhenChange = change(setWhen);
+  const onWhereChange = change(setWhere);
+  const onWhoChange = change(setWho);
 
   const previewText = `${when || "Då"} när jag var ${where || "någonstans"} med ${who || "någon"}.`;
   const displayPreviwText = previewText[0].toUpperCase() + previewText.substring(1);
 
-  const clear = () => {
+  const clearAllKeys = () => {
     let key: string | null;
     const keysToRemove = [];
 
     for (let i = 0; i < localStorage.length; i++) {
       key = localStorage.key(i);
-      if (key?.includes("the-work")) {
-        keysToRemove.push(key);
-      }
+      key?.includes("the-work") && keysToRemove.push(key);
     }
+
     keysToRemove.forEach((key) => localStorage.removeItem(key));
     setWhen("");
     setWhere("");
@@ -39,14 +42,15 @@ export default function WhoWhenWhere() {
 
   return (
     <Box>
-      <HeadLine>Notice 🧘🏼‍♂️</HeadLine>
-      <Text>Who upsets you? Why? Recall a specific situation.</Text>
+      <HeadLine>Känn efter 🧘🏼‍♂️</HeadLine>
       <Text>
-        To begin, relax and be still. Travel in your mind to a specific situation where you were angry, hurt, sad, or
-        disappointed with someone. Witness the situation. Be there now. Notice, name, and feel the emotion you were
-        experiencing at the time. Find the reason you were upset.
+        Slappna av, blunda om du behöver, och dröm tillbaka till minnena av en situation som du har svårt att släppa.
       </Text>
-      <Card>Exempel: Igår när jag var i bilen med Matilda, Kristina och Misse.</Card>
+      <Text>
+        Kanske var det den gången din dejt blocka ditt nummer. Eller den gången då din kollega sa att du var rolig, men
+        det kändes som att hen skrattade åt, inte med dig.
+      </Text>
+      <ExampleBox>Exempel: Igår när jag var i bilen med Matilda, Kristina och Misse.</ExampleBox>
       <PaddedBox>
         <TextField label="När hände det?" value={when} onChange={onWhenChange} autoComplete="off" />
       </PaddedBox>
@@ -69,7 +73,7 @@ export default function WhoWhenWhere() {
             <NavButton to="the-situation" txt="Berätta vad som hände" />
           </PaddedBox>
           <PaddedBox>
-            <Button onClick={clear} color="warning">
+            <Button onClick={clearAllKeys} color="warning">
               Rensa
             </Button>
           </PaddedBox>
